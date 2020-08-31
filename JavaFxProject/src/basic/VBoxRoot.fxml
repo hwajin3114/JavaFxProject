@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+	xmlns="http://javafx.com/javafx/8">
+	<padding>
+		<Insets bottom="10" left="10" right="10" top="10" />
+	</padding>
+
+	<children>
+		<!-- preserveRatio : 그림의 비율에 맞게 높이 설정 -->
+		<ImageView fitWidth="200" preserveRatio="true">
+			<image>
+				<Image url="@../images/apeach.png" />
+			</image>
+		</ImageView>
+
+		<HBox alignment="CENTER" spacing="20">
+			<children>
+				<Button text="이전" />
+				<Button text="다음">
+					<!-- 오른쪽 남은 공간을 '다음' 버튼이 모두 채우도록 설정 -->
+					<HBox.hgrow>
+						<Priority fx:constant="ALWAYS" />
+					</HBox.hgrow>
+					<!-- 버튼의 폭을 자동으로 확장하기 위해 설정 -->
+					<maxWidth>
+						<Double fx:constant="MAX_VALUE" />
+					</maxWidth>
+				</Button>
+			</children>
+			<VBox.margin>
+				<Insets top="10.0" />
+			</VBox.margin>
+		</HBox>
+	</children>
+</VBox>

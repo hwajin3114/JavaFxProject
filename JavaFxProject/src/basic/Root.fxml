@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<!-- HBox라는 태그 정의. 아래 주소에 있는 정보에 따라 생성되었다는 것(걍 구조임..) -->
+<HBox xmlns:fx="http://javafx.com/fxml/1">
+	<padding> <!-- 매개값으로 Insets -->
+		<Insets top="10" right="10" bottom="10" left="10" />
+	</padding>
+	<spacing>10</spacing> <!-- 컨트롤들 간의 간격 -->
+	<children>	<!-- 컨테이너에 아래 컨트롤들을 자식으로 하겠다 -->
+		<TextField>
+			<prefWidth>200</prefWidth>
+		</TextField>
+
+		<Button>
+			<text>확인</text>
+		</Button>
+	</children>
+</HBox>
