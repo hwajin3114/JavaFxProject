@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Slider?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+	prefHeight="250" prefWidth="350" fx:controller="basic.container.eventhandle.RootController">
+	<center>
+		<!-- controller 파일에서 여기에 접근하기 위해 id를 주자 -->
+		<Label text="JavaFX" fx:id="label">
+			<font>
+				<Font size="10" />
+			</font>
+		</Label>
+	</center>
+	<bottom>
+		<!-- 폰트 크기 변경 가능한 속성 값 -->
+		<Slider fx:id="slider" />
+	</bottom>
+</BorderPane>
+
