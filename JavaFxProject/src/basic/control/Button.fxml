@@ -56,7 +56,7 @@
 	</center>
 	
 	<bottom>
-		<Button fx:id="btnExit" BorderPane.alignment="CENTER" onAction="#handleBtnExitAction">
+		<Button fx:id="btnExit" BorderPane.alignment="CENTER"> <!-- onAction="#handleBtnExitAction" 대신 controller에서 setOnAction으로 해도됨 -->
 			<graphic>
 				<ImageView><Image url="@../../images/exit.png" /></ImageView>
 			</graphic>
