@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,8 +35,13 @@ public class BoardController implements Initializable {
 	@FXML
 	TextArea txtContent;
 
+	ObservableList<String> list = FXCollections.observableArrayList("공개", "비공개");
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		comboPublic.setItems(list);
+		comboPublic.getSelectionModel().selectFirst();
+
 		// TableColumn<Board, String> : Board 값을 받아와서 String 값으로 반환(화면에 내보내는 값)
 		TableColumn<Board, String> tcTitle = new TableColumn<>("제목");
 		tcTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -92,5 +98,9 @@ public class BoardController implements Initializable {
 		}
 
 		return list;
+	}
+	
+	public void btnCancel() {
+		Platform.exit();
 	}
 }

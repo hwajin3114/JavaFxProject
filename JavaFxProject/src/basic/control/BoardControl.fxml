@@ -5,28 +5,39 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
-    fx:controller="basic.control.BoardController">
-   <children>
-      <TableView fx:id="boardView" layoutX="25.0" layoutY="55.0" prefHeight="241.0" prefWidth="175.0">
-      <!-- 컬럼을 주석해놔서 view만 있는 상태 -->
-        <!-- <columns>
-          <TableColumn fx:id="tcBoardNo" prefWidth="75.0" text="boardNo" />
-          <TableColumn fx:id="tcTitle" prefWidth="75.0" text="title" />
-        </columns> -->
-      </TableView>
-      <Label layoutX="25.0" layoutY="30.0" text="리스트" />
-      <Label layoutX="238.0" layoutY="30.0" text="-------------- 상세내용 ------------" />
-      <Label layoutX="235.0" layoutY="55.0" text="제목" />
-      <Label layoutX="235.0" layoutY="88.0" text="공개여부" />
-      <Label layoutX="353.0" layoutY="88.0" text="종료일자" />
-      <Label layoutX="235.0" layoutY="139.0" text="내용" />
-      <TextField fx:id="txtTitle" layoutX="283.0" layoutY="51.0" prefHeight="23.0" prefWidth="192.0" />
-      <ComboBox fx:id="comboPublic" layoutX="235.0" layoutY="110.0" prefHeight="23.0" prefWidth="85.0" />
-      <TextField fx:id="txtExitDate" layoutX="351.0" layoutY="110.0" prefHeight="23.0" prefWidth="113.0" />
-      <TextArea fx:id="txtContent" layoutX="235.0" layoutY="163.0" prefHeight="131.0" prefWidth="247.0" />
-      <Button fx:id="btnPrev" layoutX="173.0" layoutY="307.0" mnemonicParsing="false" text="Prev" />
-      <Button fx:id="btnNext" layoutX="254.0" layoutY="307.0" mnemonicParsing="false" text="Next" />
-      <Separator layoutX="215.0" layoutY="35.0" orientation="VERTICAL" prefHeight="265.0" />
-   </children>
+<AnchorPane prefHeight="350.0" prefWidth="500.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="basic.control.BoardController"
+	stylesheets="@myStyle.css">
+	<children>
+		<TableView fx:id="boardView" layoutX="25.0" layoutY="55.0"
+			prefHeight="241.0" prefWidth="175.0">
+			<!-- 컬럼을 주석해놔서 view만 있는 상태 -->
+			<!-- <columns> <TableColumn fx:id="tcBoardNo" prefWidth="75.0" text="boardNo" 
+				/> <TableColumn fx:id="tcTitle" prefWidth="75.0" text="title" /> </columns> -->
+		</TableView>
+		<Label layoutX=" 25.0" layoutY="30.0" text="리스트" />
+		<Label styleClass="lblClass" layoutX="238.0" layoutY="30.0"
+			text="-------------- 상세내용 ------------" />
+		<Label styleClass="lblClass" layoutX="235.0" layoutY="55.0" text="제목" />
+		<Label styleClass="lblClass" layoutX="235.0" layoutY="88.0" text="공개여부" />
+		<Label styleClass="lblClass" layoutX="353.0" layoutY="88.0" text="종료일자" />
+		<Label styleClass="lblClass" layoutX="235.0" layoutY="139.0" text="내용" />
+		<TextField fx:id="txtTitle" layoutX="283.0" layoutY="51.0"
+			prefHeight="23.0" prefWidth="192.0" />
+		<ComboBox fx:id="comboPublic" layoutX="235.0" layoutY="110.0"
+			prefHeight="23.0" prefWidth="85.0" />
+		<TextField fx:id="txtExitDate" layoutX="351.0"
+			layoutY="110.0" prefHeight="23.0" prefWidth="113.0" />
+		<TextArea fx:id="txtContent" layoutX="235.0" layoutY="163.0"
+			prefHeight="131.0" prefWidth="247.0" />
+		<Button fx:id="btnPrev" layoutX="173.0" layoutY="307.0"
+			mnemonicParsing="false" text="Prev" />
+		<Button fx:id="btnNext" layoutX="254.0" layoutY="307.0"
+			mnemonicParsing="false" text="Next" />
+		<Button fx:id="btnCancel" layoutX="400.0" layoutY="307.0"
+			mnemonicParsing="false" text="Cancel" onAction="#btnCancel" />
+		<Separator layoutX="215.0" layoutY="35.0"
+			orientation="VERTICAL" prefHeight="265.0" />
+	</children>
 </AnchorPane>

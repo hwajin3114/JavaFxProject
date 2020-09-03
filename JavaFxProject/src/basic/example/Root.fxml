@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="basic.example.RootController">
+	<center>
+		<TableView fx:id="tableView" prefWidth="420" prefHeight="200" >
+			<columns>
+				<TableColumn prefWidth="100" resizable="false" text="Name" />
+				<TableColumn prefWidth="100" resizable="false" text="Korean" />
+				<TableColumn prefWidth="100" resizable="false" text="Math" />
+				<TableColumn prefWidth="100" resizable="false" text="English" />
+			</columns>
+		</TableView>
+	</center>
+	<bottom>
+		<HBox prefHeight="50" alignment="CENTER">
+			<children>
+				<Button fx:id="btnAdd" text="Add" />
+				<Button fx:id="btnBarChart" text="BarChart" />
+			</children>
+		</HBox>
+	</bottom>
+</BorderPane>
+
