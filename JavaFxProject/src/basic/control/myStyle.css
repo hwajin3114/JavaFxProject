@@ -24,6 +24,13 @@ Button {
 	-fx-text-fill: white;
 }
 
+#btnModify {
+	-fx-background-color: #6BA292;
+	-fx-border-color: white;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+}
+
 AnchorPane {
 	-fx-background-color: #FCBB6D;
 }

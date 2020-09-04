@@ -31,6 +31,8 @@
 			layoutY="110.0" prefHeight="23.0" prefWidth="113.0" />
 		<TextArea fx:id="txtContent" layoutX="235.0" layoutY="163.0"
 			prefHeight="131.0" prefWidth="247.0" />
+		<Button fx:id="btnModify" layoutX="50.0" layoutY="307.0"
+			mnemonicParsing="false" text="Modify" />
 		<Button fx:id="btnPrev" layoutX="173.0" layoutY="307.0"
 			mnemonicParsing="false" text="Prev" />
 		<Button fx:id="btnNext" layoutX="254.0" layoutY="307.0"

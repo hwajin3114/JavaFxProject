@@ -8,12 +8,30 @@ public class Student {
 	private SimpleIntegerProperty korean;
 	private SimpleIntegerProperty math;
 	private SimpleIntegerProperty english;
+	private SimpleIntegerProperty snum;
 
 	public Student(String name, int korean, int math, int english) {
 		this.name = new SimpleStringProperty(name);
 		this.korean = new SimpleIntegerProperty(korean);
 		this.math = new SimpleIntegerProperty(math);
 		this.english = new SimpleIntegerProperty(english);
+	}
+
+
+	public Student(int snum, String name, int korean, int math, int english) {
+		this.snum = new SimpleIntegerProperty(snum);
+		this.name = new SimpleStringProperty(name);
+		this.korean = new SimpleIntegerProperty(korean);
+		this.math = new SimpleIntegerProperty(math);
+		this.english = new SimpleIntegerProperty(english);
+	}
+
+	public int getSnum() {
+		return this.snum.get();
+	}
+
+	public void setSnum(int snum) {
+		this.snum.set(snum);
 	}
 
 	public String getName() {

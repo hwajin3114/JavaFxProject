@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import basic.common.ConnectionDB;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,8 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -35,11 +36,21 @@ public class BoardController implements Initializable {
 	@FXML
 	TextArea txtContent;
 
-	ObservableList<String> list = FXCollections.observableArrayList("공개", "비공개");
+	@FXML
+	Button btnNext, btnPrev, btnModify;
+
+	ObservableList<String> Plist = FXCollections.observableArrayList("공개", "비공개");
+	ObservableList<Board> list;
+
+	int count = 0;
+	int nextCount = 0;
+	int prevCount = 0;
+	String sql = "";
+	Connection conn = ConnectionDB.getDB();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		comboPublic.setItems(list);
+		comboPublic.setItems(Plist);
 		comboPublic.getSelectionModel().selectFirst();
 
 		// TableColumn<Board, String> : Board 값을 받아와서 String 값으로 반환(화면에 내보내는 값)
@@ -69,22 +80,59 @@ public class BoardController implements Initializable {
 				txtContent.setText(newValue.getContent());
 			}
 		});
+
+		// next 버튼
+		btnNext.setOnAction(e -> clickBtnNextAction());
+
+		// prv 버튼
+		btnPrev.setOnAction(e -> clickBtnPrevAction());
+
+		// modify 버튼
+		btnModify.setOnAction(e -> clickBtnModifyAction());
+	}
+
+	private void clickBtnNextAction() {
+		boardView.getSelectionModel().selectNext();
+		count = boardView.getSelectionModel().getFocusedIndex();
+		sql = "select * from new_board";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			int r = pstmt.executeUpdate();
+			if (nextCount == count) {
+				boardView.getSelectionModel().selectFirst();
+			}
+			nextCount = count;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void clickBtnPrevAction() {
+		boardView.getSelectionModel().selectPrevious();
+		int num = boardView.getSelectionModel().getFocusedIndex();
+		System.out.println("num> "+num);
+		System.out.println("prevCount> "+prevCount);
+		if (prevCount == num) {
+			boardView.getSelectionModel().selectLast();
+		}
+		prevCount = num;
+	}
+
+	private void clickBtnModifyAction() {
+		if (boardView.getSelectionModel().isEmpty()) {
+			System.out.println("선택안됨");
+		} else {
+			System.out.println("선택됨");
+			txtTitle.setEditable(false); // 수정 불가
+//			System.out.println(boardView.getSelectionModel().);
+			System.out.println(txtTitle.getText());
+		}
 	}
 
 	public ObservableList<Board> getBoardList() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "hr", passwd = "hr";
-		Connection conn = null; // 커넥션 생성(java.sql)
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection(url, user, passwd);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-
-		String sql = "select * from new_board order by 1";
+		sql = "select * from new_board order by 1";
 		// observableArrayList : 정적 메소드
-		ObservableList<Board> list = FXCollections.observableArrayList(); // 인스턴스 생성
+		list = FXCollections.observableArrayList(); // 인스턴스 생성
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery(); // 쿼리 결과를 ResultSet에 담는다.
@@ -99,7 +147,7 @@ public class BoardController implements Initializable {
 
 		return list;
 	}
-	
+
 	public void btnCancel() {
 		Platform.exit();
 	}

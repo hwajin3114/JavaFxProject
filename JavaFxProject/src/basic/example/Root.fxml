@@ -22,6 +22,7 @@
 			<children>
 				<Button fx:id="btnAdd" text="Add" />
 				<Button fx:id="btnBarChart" text="BarChart" />
+				<Button fx:id="btnDelete" text="Delete" />
 			</children>
 		</HBox>
 	</bottom>
