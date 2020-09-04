@@ -123,7 +123,7 @@ public class RootController implements Initializable {
 		return list;
 	}
 
-	// 수정
+	// 수정 화면
 	public void handleDoubleClickAction(int snum) {
 		Stage stage = new Stage(StageStyle.UTILITY);
 		stage.initModality(Modality.WINDOW_MODAL);
@@ -207,7 +207,7 @@ public class RootController implements Initializable {
 	}
 
 	// AddForm.fxml로 넘어가야함
-	// 추가
+	// 등록 화면
 	public void handleBtnAddAction() {
 		// 윈도우 스타일
 		Stage stage = new Stage(StageStyle.UTILITY);
@@ -263,6 +263,7 @@ public class RootController implements Initializable {
 		}
 	}
 
+	// 추가
 	public void insertStudent(Student student) {
 		sql = "insert into student values(snum.NEXTVAL, \'" + student.getName() + "\', " + student.getKorean() + ", "
 				+ student.getMath() + ", " + student.getEnglish() + ")";
@@ -274,7 +275,8 @@ public class RootController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// 수정
 	public void updateStudent(Student student) {
 		System.out.println("updatenum : " + student.getSnum());
 		sql = "update student set kScore = ?, mScore = ?, eScore = ? where snum =?";
