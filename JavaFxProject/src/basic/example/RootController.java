@@ -9,18 +9,33 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import basic.common.ConnectionDB;
-import javafx.collections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.*;
-import javafx.scene.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.*;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class RootController implements Initializable {
 	@FXML
@@ -67,13 +82,17 @@ public class RootController implements Initializable {
 		// 차트 버튼
 		btnBarChart.setOnAction(e -> handleBtnChartAction());
 
+		// 삭제 버튼
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				selectedNum = tableView.getSelectionModel().getSelectedItem().getSnum();
-				handleBtnDeleteAction(selectedNum);
-				tableView.setItems(getStudentList()); // refresh
+				if (tableView.getSelectionModel().isEmpty()) {
+					showPopup(" 목록 선택 안됨 ");
+				} else {
+					selectedNum = tableView.getSelectionModel().getSelectedItem().getSnum();
+					handleBtnDeleteAction(selectedNum);
+				}
 			}
 		});
 
@@ -94,13 +113,49 @@ public class RootController implements Initializable {
 
 	// 삭제
 	public void handleBtnDeleteAction(int snum) {
-		sql = "delete from student where snum = " + snum;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		System.out.println("삭제 버튼 클릭");
+		Stage stage = new Stage(StageStyle.UTILITY);
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(primaryStage);
+
+		// 레이아웃
+		AnchorPane ap = new AnchorPane();
+		ap.setPrefSize(150, 80);
+
+		Label comment = new Label("삭제하시겠습니까?");
+		comment.setLayoutX(28);
+		comment.setLayoutY(15);
+		System.out.println(comment.getLayoutX());
+		System.out.println(comment.getLayoutY());
+		Button btn1 = new Button("확인");
+		btn1.setLayoutX(20);
+		btn1.setLayoutY(43);
+		btn1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				sql = "delete from student where snum = " + snum;
+				try {
+					pstmt = conn.prepareStatement(sql);
+					pstmt.executeUpdate();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				stage.close();
+				tableView.setItems(getStudentList()); // refresh
+			}
+		});
+		Button btn2 = new Button("취소");
+		btn2.setLayoutX(90);
+		btn2.setLayoutY(43);
+		btn2.setOnAction(e -> stage.close());
+
+		ap.getChildren().addAll(comment, btn1, btn2);
+
+		Scene scene = new Scene(ap);
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	// 조회
@@ -123,7 +178,7 @@ public class RootController implements Initializable {
 		return list;
 	}
 
-	// 수정 화면
+	// 수정
 	public void handleDoubleClickAction(int snum) {
 		Stage stage = new Stage(StageStyle.UTILITY);
 		stage.initModality(Modality.WINDOW_MODAL);
@@ -206,8 +261,7 @@ public class RootController implements Initializable {
 		stage.show();
 	}
 
-	// AddForm.fxml로 넘어가야함
-	// 등록 화면
+	// 추가 | AddForm.fxml로 넘어가야함
 	public void handleBtnAddAction() {
 		// 윈도우 스타일
 		Stage stage = new Stage(StageStyle.UTILITY);
@@ -234,14 +288,28 @@ public class RootController implements Initializable {
 					TextField txtKorean = (TextField) parent.lookup("#txtKorean");
 					TextField txtMath = (TextField) parent.lookup("#txtMath");
 					TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
-					Student student = new Student(txtName.getText(), Integer.parseInt(txtKorean.getText()),
-							Integer.parseInt(txtMath.getText()), Integer.parseInt(txtEnglish.getText()));
 
-					insertStudent(student);
-//					list.add(student);
-					// null 값일 경우 입력하라는 팝업 띄우기
-					tableView.setItems(getStudentList()); // refresh
-					stage.close();
+					if (txtName.getText() == null || txtName.getText().equals("")) {
+						showPopup("이름을 입력하세요");
+						txtName.requestFocus();
+					} else if (txtKorean.getText() == null || txtKorean.getText().equals("")) {
+						showPopup("국어 점수를 입력하세요");
+						txtKorean.requestFocus();
+					} else if (txtMath.getText() == null || txtMath.getText().equals("")) {
+						showPopup("수학 점수를 입력하세요");
+						txtMath.requestFocus();
+					} else if (txtEnglish.getText() == null || txtEnglish.getText().equals("")) {
+						showPopup("영어 점수를 입력하세요");
+						txtEnglish.requestFocus();
+					} else {
+						Student student = new Student(txtName.getText(), Integer.parseInt(txtKorean.getText()),
+								Integer.parseInt(txtMath.getText()), Integer.parseInt(txtEnglish.getText()));
+//						System.out.println("등록되었습니다.");
+						insertStudent(student);
+
+						tableView.setItems(getStudentList()); // refresh
+						stage.close();
+					}
 				}
 			});
 
@@ -275,7 +343,7 @@ public class RootController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 수정
 	public void updateStudent(Student student) {
 		System.out.println("updatenum : " + student.getSnum());
@@ -290,7 +358,6 @@ public class RootController implements Initializable {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void handleBtnChartAction() {
@@ -347,8 +414,34 @@ public class RootController implements Initializable {
 			seriesE.setData(englishList);
 			barChart.getData().add(seriesE);
 
+			Button btnClose = (Button) chart.lookup("#btnClose");
+			btnClose.setOnAction(e -> stage.close());
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void showPopup(String msg) {
+		// poppup 타이틀 등록
+		HBox hbox = new HBox();
+		hbox.setStyle("-fx-background-color:#ffdc7c;");
+		hbox.setAlignment(Pos.CENTER);
+
+		ImageView iv = new ImageView();
+		iv.setImage(new Image("images/dialog-info.png"));
+
+		Label label = new Label();
+		label.setText(msg);
+
+		hbox.getChildren().addAll(iv, label);
+
+		Popup pop = new Popup(); // 얘도 컨테이너처럼 컨트롤들이 있어야한다.
+		pop.getContent().add(hbox);
+		pop.setAutoHide(true);
+
+		// primary 윈도우에 있는 컨트롤 아무거나를 기준으로 얘가 등록된 씬을 알아낼수 있다.
+		// 그리고 그 씬이 소속된 윈도우 알아내기
+		pop.show(btnAdd.getScene().getWindow());
 	}
 }
