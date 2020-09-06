@@ -20,6 +20,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -377,6 +379,12 @@ public class RootController implements Initializable {
 			// XYChart.Series<T, U> ObservableList<XYChart.Data<T, U> -> Series에 Data 모음을 담고
 			// 그걸 차트로 나타낸다.
 			BarChart barChart = (BarChart) chart.lookup("#barChart");
+			barChart.setTitle("학생 별 성적");
+			CategoryAxis xAxis = new CategoryAxis();
+			NumberAxis yAxis = new NumberAxis();
+			xAxis.setLabel("과목");
+			yAxis.setLabel("학생 수");
+			
 
 			XYChart.Series<String, Integer> seriesK = new XYChart.Series<String, Integer>();
 			seriesK.setName("국어");
@@ -406,13 +414,10 @@ public class RootController implements Initializable {
 			}
 
 			seriesK.setData(koreanList);
-			barChart.getData().add(seriesK);
-
 			seriesM.setData(mathList);
-			barChart.getData().add(seriesM);
-
 			seriesE.setData(englishList);
-			barChart.getData().add(seriesE);
+
+			barChart.getData().addAll(seriesK, seriesM, seriesE);
 
 			Button btnClose = (Button) chart.lookup("#btnClose");
 			btnClose.setOnAction(e -> stage.close());
