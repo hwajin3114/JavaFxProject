@@ -20,8 +20,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,16 +41,22 @@ public class RootController implements Initializable {
 	@FXML
 	TableView<Student> tableView;
 	@FXML
-	Button btnAdd, btnBarChart, btnDelete;
+	Button btnAdd, btnBarChart, btnDelete, btnNext, btnPrev;
 
 	ObservableList<Student> list;
 
 	Stage primaryStage; // 필드 선언
 	int selectedNum = 0;
 
+	int count = 0;
+	int nextCount = 0;
+	int prevCount = 0;
+
 	String sql = "";
 	Connection conn = ConnectionDB.getDB();
 	PreparedStatement pstmt;
+	
+	String style="-fx-border-color: white; -fx-border-radius: 5; -fx-text-fill: white; -fx-background-color: #849FAD;";
 
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -78,6 +82,12 @@ public class RootController implements Initializable {
 
 		tableView.setItems(getStudentList());
 
+		// next 버튼
+		btnNext.setOnAction(e -> clickBtnNextAction());
+
+		// prv 버튼
+		btnPrev.setOnAction(e -> clickBtnPrevAction());
+
 		// 추가 버튼
 		btnAdd.setOnAction(e -> handleBtnAddAction());
 
@@ -90,7 +100,7 @@ public class RootController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				if (tableView.getSelectionModel().isEmpty()) {
-					showPopup(" 목록 선택 안됨 ");
+					showPopup(" 목록 선택 안됨 ", btnAdd);
 				} else {
 					selectedNum = tableView.getSelectionModel().getSelectedItem().getSnum();
 					handleBtnDeleteAction(selectedNum);
@@ -113,6 +123,31 @@ public class RootController implements Initializable {
 		});
 	} // end of initialize
 
+	private void clickBtnNextAction() {
+		tableView.getSelectionModel().selectNext();
+		count = tableView.getSelectionModel().getFocusedIndex();
+		sql = "select * from new_board";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			int r = pstmt.executeUpdate();
+			if (nextCount == count) {
+				tableView.getSelectionModel().selectFirst();
+			}
+			nextCount = count;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void clickBtnPrevAction() {
+		tableView.getSelectionModel().selectPrevious();
+		int num = tableView.getSelectionModel().getFocusedIndex();
+		if (prevCount == num) {
+			tableView.getSelectionModel().selectLast();
+		}
+		prevCount = num;
+	}
+
 	// 삭제
 	public void handleBtnDeleteAction(int snum) {
 
@@ -123,13 +158,12 @@ public class RootController implements Initializable {
 
 		// 레이아웃
 		AnchorPane ap = new AnchorPane();
+		ap.setStyle("-fx-background-color: #B6CEC7");
 		ap.setPrefSize(150, 80);
 
 		Label comment = new Label("삭제하시겠습니까?");
 		comment.setLayoutX(28);
 		comment.setLayoutY(15);
-		System.out.println(comment.getLayoutX());
-		System.out.println(comment.getLayoutY());
 		Button btn1 = new Button("확인");
 		btn1.setLayoutX(20);
 		btn1.setLayoutY(43);
@@ -153,6 +187,9 @@ public class RootController implements Initializable {
 		btn2.setLayoutY(43);
 		btn2.setOnAction(e -> stage.close());
 
+
+		btn1.setStyle(style);
+		btn2.setStyle(style);
 		ap.getChildren().addAll(comment, btn1, btn2);
 
 		Scene scene = new Scene(ap);
@@ -189,6 +226,7 @@ public class RootController implements Initializable {
 		// 레이아웃
 		AnchorPane ap = new AnchorPane();
 		ap.setPrefSize(210, 230); // 컨테이너 크기
+		ap.setStyle("-fx-background-color: #B6CEC7");
 
 		Label lKorean, lMath, lEnglish;
 		TextField tName, tKorean, tMath, tEnglish;
@@ -230,6 +268,7 @@ public class RootController implements Initializable {
 		Button btnUpdate = new Button("수정");
 		btnUpdate.setLayoutX(85);
 		btnUpdate.setLayoutY(184);
+		btnUpdate.setStyle(style);
 		btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -292,16 +331,16 @@ public class RootController implements Initializable {
 					TextField txtEnglish = (TextField) parent.lookup("#txtEnglish");
 
 					if (txtName.getText() == null || txtName.getText().equals("")) {
-						showPopup("이름을 입력하세요");
+						showPopup("이름을 입력하세요", btnFormAdd);
 						txtName.requestFocus();
 					} else if (txtKorean.getText() == null || txtKorean.getText().equals("")) {
-						showPopup("국어 점수를 입력하세요");
+						showPopup("국어 점수를 입력하세요", btnFormAdd);
 						txtKorean.requestFocus();
 					} else if (txtMath.getText() == null || txtMath.getText().equals("")) {
-						showPopup("수학 점수를 입력하세요");
+						showPopup("수학 점수를 입력하세요", btnFormAdd);
 						txtMath.requestFocus();
 					} else if (txtEnglish.getText() == null || txtEnglish.getText().equals("")) {
-						showPopup("영어 점수를 입력하세요");
+						showPopup("영어 점수를 입력하세요", btnFormAdd);
 						txtEnglish.requestFocus();
 					} else {
 						Student student = new Student(txtName.getText(), Integer.parseInt(txtKorean.getText()),
@@ -315,8 +354,8 @@ public class RootController implements Initializable {
 				}
 			});
 
-			Button btnFormCancel = (Button) parent.lookup("#btnFormCancel");
-			btnFormCancel.setOnAction(e -> {
+			Button btnFormClear = (Button) parent.lookup("#btnFormClear");
+			btnFormClear.setOnAction(e -> {
 				TextField txtName = (TextField) parent.lookup("#txtName");
 				TextField txtKorean = (TextField) parent.lookup("#txtKorean");
 				TextField txtMath = (TextField) parent.lookup("#txtMath");
@@ -379,12 +418,8 @@ public class RootController implements Initializable {
 			// XYChart.Series<T, U> ObservableList<XYChart.Data<T, U> -> Series에 Data 모음을 담고
 			// 그걸 차트로 나타낸다.
 			BarChart barChart = (BarChart) chart.lookup("#barChart");
+
 			barChart.setTitle("학생 별 성적");
-			CategoryAxis xAxis = new CategoryAxis();
-			NumberAxis yAxis = new NumberAxis();
-			xAxis.setLabel("과목");
-			yAxis.setLabel("학생 수");
-			
 
 			XYChart.Series<String, Integer> seriesK = new XYChart.Series<String, Integer>();
 			seriesK.setName("국어");
@@ -427,7 +462,7 @@ public class RootController implements Initializable {
 		}
 	}
 
-	public void showPopup(String msg) {
+	public void showPopup(String msg, Button btn) {
 		// poppup 타이틀 등록
 		HBox hbox = new HBox();
 		hbox.setStyle("-fx-background-color:#ffdc7c;");
@@ -447,6 +482,18 @@ public class RootController implements Initializable {
 
 		// primary 윈도우에 있는 컨트롤 아무거나를 기준으로 얘가 등록된 씬을 알아낼수 있다.
 		// 그리고 그 씬이 소속된 윈도우 알아내기
-		pop.show(btnAdd.getScene().getWindow());
+		pop.show(btn.getScene().getWindow());
+	}
+
+	// 입력값 체크
+	public boolean checkInsert(TextField txt) {
+		boolean result = true;
+		if (!txt.getText().matches("^[0-9]+$")) {
+			result = false;
+		} else {
+			result = true;
+		}
+		System.out.println("result : " + result);
+		return result;
 	}
 }

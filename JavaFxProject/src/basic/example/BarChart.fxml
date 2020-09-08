@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="300" prefWidth="400">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="300" prefWidth="400" stylesheets="@myStyle.css">
 	<center>
 		<BarChart id="barChart">
 			<xAxis>

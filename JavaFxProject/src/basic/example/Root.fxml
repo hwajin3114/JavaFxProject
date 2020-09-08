@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="basic.example.RootController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="basic.example.RootController" stylesheets="@myStyle.css">
 	<center>
 		<TableView fx:id="tableView" prefWidth="420" prefHeight="200" >
 			<columns>
@@ -18,11 +18,13 @@
 		</TableView>
 	</center>
 	<bottom>
-		<HBox prefHeight="50" alignment="CENTER">
+		<HBox prefHeight="50" alignment="CENTER" spacing="20">
 			<children>
+				<Button fx:id="btnPrev" text="Prev" />
 				<Button fx:id="btnAdd" text="Add" />
 				<Button fx:id="btnBarChart" text="BarChart" />
 				<Button fx:id="btnDelete" text="Delete" />
+				<Button fx:id="btnNext" text="Next" />
 			</children>
 		</HBox>
 	</bottom>

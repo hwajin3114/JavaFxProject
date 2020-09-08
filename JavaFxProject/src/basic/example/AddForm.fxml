@@ -9,7 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 
-<BorderPane prefHeight="217.0" prefWidth="211.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="217.0" prefWidth="211.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@myStyle.css">
 	<padding>
 		<Insets topRightBottomLeft="20" />
 	</padding>
@@ -38,13 +38,10 @@
 		</GridPane>
 	</center>
 	<bottom>
-		<HBox prefHeight="24.0" prefWidth="123.0" spacing="20" BorderPane.alignment="CENTER">
-			<BorderPane.margin>
-				<Insets topRightBottomLeft="10" />
-			</BorderPane.margin>
+		<HBox prefHeight="24.0" prefWidth="123.0" spacing="20" alignment="CENTER">
 			<children>
 				<Button id="btnFormAdd" text="Save" />
-				<Button id="btnFormCancel" text="Cancel" />
+				<Button id="btnFormClear" text="Clear" />
 			</children>
 		</HBox>
 	</bottom>
