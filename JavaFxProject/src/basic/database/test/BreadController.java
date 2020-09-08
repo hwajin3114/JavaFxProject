@@ -34,6 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -48,23 +49,25 @@ public class BreadController implements Initializable {
 	@FXML
 	TableView<Member> memView;
 	@FXML
-	TextField tName, txtPrice, txtRegDate, txtContent;
+	TextField txtName, txtPrice, txtRegDate, txtContent;
 	@FXML
 	ImageView img;
 	@FXML
-	Button btnNext, btnPrev, btnModify, btnCancel, btnAdd;
+	Button btnNext, btnPrev, btnModify, btnCancel, btnAdd, btnDelete;
 
 	ObservableList<Bread> list;
 	ObservableList<Member> mlist;
 	File selected;
 	int selectedNum = 0;
 
-	int count = 0;
+	int count = 0, num = 0;
 	int nextCount = 0;
 	int prevCount = 0;
 	String sql = "";
 	PreparedStatement pstmt;
 	Connection conn = ConnectionDB.getDB();
+
+	String style = "-fx-border-color: white; -fx-border-radius: 5; -fx-text-fill: white; -fx-background-color: #849FAD;";
 
 	Stage primaryStage;
 
@@ -78,6 +81,8 @@ public class BreadController implements Initializable {
 		BreadTable();
 		MemberTable();
 
+		btnCancel.setOnAction(e -> Platform.exit());
+
 		// next 버튼
 		btnNext.setOnAction(e -> clickBtnNextAction());
 
@@ -85,7 +90,7 @@ public class BreadController implements Initializable {
 		btnPrev.setOnAction(e -> clickBtnPrevAction());
 
 		// 빵 add 버튼
-		btnAdd.setOnAction(e -> clickBtnAddAction());
+		btnAdd.setOnAction(e -> insertBread());
 
 		// 빵 modify 버튼
 		btnModify.setOnAction(new EventHandler<ActionEvent>() {
@@ -101,8 +106,20 @@ public class BreadController implements Initializable {
 				boardView.setItems(getBoardList()); // refresh
 			}
 		});
-		
+
 		// 빵 delete
+		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (boardView.getSelectionModel().isEmpty()) {
+					showPopup(" 목록을 선택 해 주세요 ", btnDelete);
+				} else {
+					selectedNum = boardView.getSelectionModel().getSelectedItem().getBnum();
+					deleteBread(selectedNum);
+				}
+			}
+		});
+
 		// 회원 add
 		// 회원 modify
 		// 회원 delete
@@ -133,11 +150,30 @@ public class BreadController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Bread> observable, Bread oldValue, Bread newValue) {
 				// 상세 정보를 하나씩 가져오겠다.
-				tName.setText(newValue.getBName());
-				tName.setEditable(false); // 수정 불가
+				txtName.setText(newValue.getBName());
+				txtName.setEditable(false); // 수정 불가
 				txtPrice.setText(String.valueOf(newValue.getBPrice()));
 				txtRegDate.setText(newValue.getRegDate());
 				txtContent.setText(newValue.getContent());
+
+				try {
+					if (newValue.getBImg() == null) {
+						img.setImage(new Image("@../../images/apeach.png"));
+					} else {
+						// 파일 읽어오기
+						FileInputStream fis = new FileInputStream(newValue.getBImg());
+						BufferedInputStream bis = new BufferedInputStream(fis);
+						// 이미지 생성하기
+						Image image = new Image(bis);
+						img.setFitHeight(100);
+						img.setFitWidth(300);
+
+						// 이미지 띄우기
+						img.setImage(image);
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -172,7 +208,7 @@ public class BreadController implements Initializable {
 	}
 
 	// 추가
-	private void clickBtnAddAction() {
+	private void insertBread() {
 		Stage stage = new Stage(StageStyle.UTILITY);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(btnAdd.getScene().getWindow());
@@ -206,6 +242,9 @@ public class BreadController implements Initializable {
 						BufferedInputStream bis = new BufferedInputStream(fis);
 						// 이미지 생성하기
 						Image img = new Image(bis);
+
+						imgView.setFitHeight(150);
+						imgView.setFitWidth(300);
 						// 이미지 띄우기
 						imgView.setImage(img);
 					} catch (FileNotFoundException e) {
@@ -218,25 +257,34 @@ public class BreadController implements Initializable {
 			breadAdd.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					TextField tName = (TextField) parent.lookup("#tName");
-					TextField tPrice = (TextField) parent.lookup("#tPrice");
-					TextField tContent = (TextField) parent.lookup("#tContent");
+					TextField txtName = (TextField) parent.lookup("#tName");
+					TextField txtPrice = (TextField) parent.lookup("#tPrice");
+					TextField txtContent = (TextField) parent.lookup("#tContent");
 
-					if (tName.getText() == null || tName.getText().equals("")) {
-						showPopup("빵 이름을 입력하세요", btnAdd);
-						tName.requestFocus();
-					} else if (tPrice.getText() == null || tPrice.getText().equals("")) {
-						showPopup("가격 입력하세요", btnAdd);
-						tPrice.requestFocus();
-					} else if (tContent.getText() == null || tContent.getText().equals("")) {
-						showPopup("설명을 입력하세요", btnAdd);
-						tContent.requestFocus();
+					System.out.println(txtName.getText());
+					if (txtName.getText() == null || txtName.getText().equals("")) {
+						showPopup("빵 이름을 입력하세요", breadAdd);
+						txtName.requestFocus();
+					} else if (txtPrice.getText() == null || txtPrice.getText().equals("")) {
+						showPopup("가격 입력하세요", breadAdd);
+						txtPrice.requestFocus();
+					} else if (txtContent.getText() == null || txtContent.getText().equals("")) {
+						showPopup("설명을 입력하세요", breadAdd);
+						txtContent.requestFocus();
 					} else {
-						Bread bread = new Bread(tName.getText(), Integer.parseInt(tPrice.getText()),
-								selected.toString(), tContent.getText());
-//						System.out.println("등록되었습니다.");
-//						insertBread(bread);
-//						sql = "insert into member values(mnum.NEXTVAL,";
+						Bread bread = new Bread(txtName.getText(), Integer.parseInt(txtPrice.getText()),
+								selected.toString(), txtContent.getText());
+
+						sql = "insert into bread values(bnum.NEXTVAL, \'" + bread.getBName() + "\', "
+								+ bread.getBPrice() + ", \'" + bread.getBImg() + "\', \'" + bread.getContent()
+								+ "\', sysdate)";
+
+						try {
+							pstmt = conn.prepareStatement(sql);
+							pstmt.executeUpdate();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 
 						boardView.setItems(getBoardList()); // refresh
 						stage.close();
@@ -246,6 +294,51 @@ public class BreadController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void deleteBread(int bnum) {
+		Stage stage = new Stage(StageStyle.UTILITY);
+		stage.initModality(Modality.WINDOW_MODAL);
+		stage.initOwner(primaryStage);
+
+		// 레이아웃
+		AnchorPane ap = new AnchorPane();
+		ap.setStyle("-fx-background-color: #B6CEC7");
+		ap.setPrefSize(150, 80);
+
+		Label comment = new Label("삭제하시겠습니까?");
+		comment.setLayoutX(28);
+		comment.setLayoutY(15);
+		Button btn1 = new Button("확인");
+		btn1.setLayoutX(20);
+		btn1.setLayoutY(43);
+		btn1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				sql = "delete from bread where bnum = " + bnum;
+				try {
+					pstmt = conn.prepareStatement(sql);
+					pstmt.executeUpdate();
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				stage.close();
+				boardView.setItems(getBoardList()); // refresh
+			}
+		});
+		Button btn2 = new Button("취소");
+		btn2.setLayoutX(90);
+		btn2.setLayoutY(43);
+		btn2.setOnAction(e -> stage.close());
+
+		btn1.setStyle(style);
+		btn2.setStyle(style);
+		ap.getChildren().addAll(comment, btn1, btn2);
+
+		Scene scene = new Scene(ap);
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	private void clickBtnNextAction() {
@@ -266,7 +359,7 @@ public class BreadController implements Initializable {
 
 	private void clickBtnPrevAction() {
 		boardView.getSelectionModel().selectPrevious();
-		int num = boardView.getSelectionModel().getFocusedIndex();
+		num = boardView.getSelectionModel().getFocusedIndex();
 		System.out.println("num> " + num);
 		System.out.println("prevCount> " + prevCount);
 		if (prevCount == num) {
@@ -276,7 +369,7 @@ public class BreadController implements Initializable {
 	}
 
 	private void clickBtnModifyAction(int bnum) {
-		System.out.println("clickBtnModifyAction");
+		System.out.println("clickBtnModifyAction : " + bnum);
 		// 이미지 넣기.. 흠
 		Bread bread = new Bread(bnum, Integer.parseInt(txtPrice.getText()), null, txtContent.getText(),
 				txtRegDate.getText());
@@ -354,9 +447,5 @@ public class BreadController implements Initializable {
 		// primary 윈도우에 있는 컨트롤 아무거나를 기준으로 얘가 등록된 씬을 알아낼수 있다.
 		// 그리고 그 씬이 소속된 윈도우 알아내기
 		pop.show(btn.getScene().getWindow());
-	}
-
-	public void btnCancel() {
-		Platform.exit();
 	}
 }

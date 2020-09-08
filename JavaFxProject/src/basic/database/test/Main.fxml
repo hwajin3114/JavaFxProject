@@ -7,62 +7,38 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="700.0" prefWidth="500.0"
-	stylesheets="@myStyle.css" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="basic.database.test.BreadController">
+<AnchorPane prefHeight="700.0" prefWidth="500.0" stylesheets="@myStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="basic.database.test.BreadController">
 	<children>
-		<TableView fx:id="boardView" layoutX="25.0" layoutY="68.0"
-			prefHeight="245.0" prefWidth="200.0">
+		<TableView fx:id="boardView" layoutX="25.0" layoutY="68.0" prefHeight="245.0" prefWidth="200.0">
 		</TableView>
 		<Label layoutX="25.0" layoutY="36.0" text="빵 목록">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</Label>
-		<Label layoutX="251.0" layoutY="74.0" styleClass="lblClass"
-			text="빵이름" />
-		<Label layoutX="251.0" layoutY="107.0" styleClass="lblClass"
-			text="가격" />
-		<Label layoutX="254.0" layoutY="158.0" styleClass="lblClass"
-			text="등록 일자" />
-		<Label layoutX="251.0" layoutY="209.0" styleClass="lblClass"
-			text="설명" />
-		<TextField fx:id="txtName" layoutX="299.0" layoutY="70.0"
-			prefHeight="23.0" prefWidth="163.0" />
-		<TextField fx:id="txtPrice" layoutX="251.0" layoutY="129.0"
-			prefHeight="23.0" prefWidth="113.0" />
-		<TextField fx:id="txtRegDate" layoutX="251.0"
-			layoutY="179.0" prefHeight="23.0" prefWidth="113.0" />
-		<TextField fx:id="txtContent" layoutX="251.0"
-			layoutY="231.0" prefHeight="82.0" prefWidth="216.0" />
-		<Button fx:id="btnModify" layoutX="335.0" layoutY="332.0"
-			mnemonicParsing="false" text="Modify" />
-		<Button fx:id="btnPrev" layoutX="140.0" layoutY="325.0"
-			mnemonicParsing="false" text="&lt;" />
-		<Button fx:id="btnNext" layoutX="196.0" layoutY="325.0"
-			mnemonicParsing="false" text="&gt;" />
-		<Button fx:id="btnCancel" layoutX="418.0" layoutY="649.0"
-			mnemonicParsing="false" onAction="#btnCancel" text="Cancel" />
-		<Button fx:id="btnAdd" layoutX="29.0" layoutY="332.0"
-			mnemonicParsing="false" text="Add" />
-		<Button fx:id="btnModify111" layoutX="411.0" layoutY="332.0"
-			mnemonicParsing="false" text="Delete" />
-		<ImageView fx:id="img" fitHeight="88.0" fitWidth="89.0"
-			layoutX="373.0" layoutY="109.0" pickOnBounds="true"
-			preserveRatio="true" />
-		<TableView fx:id="memView" layoutX="25.0" layoutY="409.0" prefHeight="230.0"
-			prefWidth="451.0" />
+		<Label layoutX="251.0" layoutY="74.0" styleClass="lblClass" text="빵이름" />
+		<Label layoutX="251.0" layoutY="107.0" styleClass="lblClass" text="가격" />
+		<Label layoutX="333.0" layoutY="107.0" styleClass="lblClass" text="등록 일자" />
+		<Label layoutX="251.0" layoutY="163.0" styleClass="lblClass" text="설명" />
+		<TextField fx:id="txtName" layoutX="299.0" layoutY="70.0" prefHeight="23.0" prefWidth="163.0" />
+		<TextField fx:id="txtPrice" layoutX="251.0" layoutY="129.0" prefHeight="23.0" prefWidth="65.0" />
+		<TextField fx:id="txtRegDate" layoutX="337.0" layoutY="129.0" prefHeight="23.0" prefWidth="113.0" />
+		<TextField fx:id="txtContent" layoutX="251.0" layoutY="185.0" prefHeight="33.0" prefWidth="216.0" />
+		<Button fx:id="btnModify" layoutX="335.0" layoutY="332.0" mnemonicParsing="false" text="Modify" />
+		<Button fx:id="btnPrev" layoutX="140.0" layoutY="325.0" mnemonicParsing="false" text="&lt;" />
+		<Button fx:id="btnNext" layoutX="196.0" layoutY="325.0" mnemonicParsing="false" text="&gt;" />
+		<Button fx:id="btnCancel" layoutX="418.0" layoutY="649.0" mnemonicParsing="false" text="Cancel" />
+		<Button fx:id="btnAdd" layoutX="29.0" layoutY="332.0" mnemonicParsing="false" text="Add" />
+		<Button fx:id="btnDelete" layoutX="411.0" layoutY="332.0" mnemonicParsing="false" text="Delete" />
+		<ImageView fx:id="img" fitHeight="88.0" fitWidth="216.0" layoutX="253.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
+		<TableView fx:id="memView" layoutX="25.0" layoutY="409.0" prefHeight="230.0" prefWidth="451.0" />
 		<Label layoutX="25.0" layoutY="378.0" text="회원 목록">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</Label>
-		<Button fx:id="btnModify1" layoutX="82.0" layoutY="649.0"
-			mnemonicParsing="false" text="Modify" />
-		<Button fx:id="btnAdd1" layoutX="27.0" layoutY="649.0"
-			mnemonicParsing="false" text="Add" />
-		<Button fx:id="btnModify11" layoutX="154.0" layoutY="649.0"
-			mnemonicParsing="false" text="Delete" />
+		<Button fx:id="btnModify1" layoutX="82.0" layoutY="649.0" mnemonicParsing="false" text="Modify" />
+		<Button fx:id="btnAdd1" layoutX="27.0" layoutY="649.0" mnemonicParsing="false" text="Add" />
+		<Button fx:id="btnModify1" layoutX="154.0" layoutY="649.0" mnemonicParsing="false" text="Delete" />
 	</children>
 </AnchorPane>
