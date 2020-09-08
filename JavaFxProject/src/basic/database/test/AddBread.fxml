@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="350.0"
+	xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+	<children>
+		<ImageView id="imgView" fitHeight="150.0" fitWidth="200.0"
+			layoutX="75.0" layoutY="66.0" pickOnBounds="true"
+			preserveRatio="true" />
+		<TextField id="tName" layoutX="106.0" layoutY="29.0" />
+		<TextField id="tPrice" layoutX="93.0" layoutY="255.0" />
+		<TextField id="tContent" layoutX="95.0" layoutY="292.0"
+			prefHeight="43.0" prefWidth="213.0" />
+		<Label layoutX="38.0" layoutY="33.0" text="빵이름" />
+		<Label layoutX="41.0" layoutY="259.0" text="가격" />
+		<Label layoutX="43.0" layoutY="292.0" text="설명" />
+		<Button layoutX="116.0" layoutY="355.0" mnemonicParsing="false"
+			text="등록" id="breadAdd" />
+		<Button layoutX="194.0" layoutY="355.0" mnemonicParsing="false"
+			text="취소" />
+		<Button layoutX="135.0" layoutY="226.0" mnemonicParsing="false"
+			text="이미지 등록" id="regImg" />
+	</children>
+</AnchorPane>

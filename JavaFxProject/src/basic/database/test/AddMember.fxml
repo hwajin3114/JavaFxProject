@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="350.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Label layoutX="191.0" layoutY="29.0" text="회원 정보 관리">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TableView layoutX="39.0" layoutY="66.0" prefHeight="218.0" prefWidth="423.0">
+        <columns>
+          <TableColumn prefWidth="95.0" text="C1" />
+          <TableColumn prefWidth="98.0" text="C2" />
+            <TableColumn prefWidth="111.0" text="Column X" />
+            <TableColumn prefWidth="58.0" text="Column X" />
+            <TableColumn prefWidth="60.0" text="Column X" />
+        </columns>
+      </TableView>
+      <Button layoutX="399.0" layoutY="303.0" mnemonicParsing="false" text="CANCEL" />
+      <Button layoutX="39.0" layoutY="303.0" mnemonicParsing="false" text="MODIFY" />
+      <Button layoutX="120.0" layoutY="303.0" mnemonicParsing="false" text="DELETE" />
+   </children>
+</AnchorPane>

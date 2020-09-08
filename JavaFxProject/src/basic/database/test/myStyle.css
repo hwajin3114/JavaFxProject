@@ -1,0 +1,40 @@
+TableView .table-column {
+  -fx-alignment: CENTER;
+}
+
+Label {
+	-fx-text-fill: blue;
+	/*	-fx-border-color: red;
+	-fx-border-radius: 5;
+*/
+}
+
+/* 라벨 클래스에 스타일 */
+.lblClass {
+	-fx-text-fill: green;
+}
+
+Button {
+	-fx-background-color: #475C7A;
+	-fx-border-color: white;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+}
+
+#btnCancel {
+	-fx-background-color: #D8737F;
+	-fx-border-color: white;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+}
+
+#btnModify {
+	-fx-background-color: #6BA292;
+	-fx-border-color: white;
+	-fx-border-radius: 5;
+	-fx-text-fill: white;
+}
+
+AnchorPane {
+	-fx-background-color: #FCBB6D;
+}
