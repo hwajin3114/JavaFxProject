@@ -4,9 +4,6 @@ TableView .table-column {
 
 Label {
 	-fx-text-fill: blue;
-	/*	-fx-border-color: red;
-	-fx-border-radius: 5;
-*/
 }
 
 /* 라벨 클래스에 스타일 */
@@ -21,14 +18,14 @@ Button {
 	-fx-text-fill: white;
 }
 
-#btnCancel {
+#btnDelete, #btnDelete1 {
 	-fx-background-color: #D8737F;
 	-fx-border-color: white;
 	-fx-border-radius: 5;
 	-fx-text-fill: white;
 }
 
-#btnModify {
+#btnModify, #btnModify1 {
 	-fx-background-color: #6BA292;
 	-fx-border-color: white;
 	-fx-border-radius: 5;

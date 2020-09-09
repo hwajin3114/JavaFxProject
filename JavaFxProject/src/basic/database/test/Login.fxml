@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="200.0" prefWidth="250.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Label layoutX="103.0" layoutY="20.0" text="로그인">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="37.0" layoutY="58.0" text="이름" />
+      <Label layoutX="25.0" layoutY="100.0" text="연락처" />
+      <TextField id="name" layoutX="86.0" layoutY="54.0" />
+      <TextField id="phone" layoutX="86.0" layoutY="96.0" />
+      <Button id="btnLogin" layoutX="63.0" layoutY="149.0" mnemonicParsing="false" text="로그인" />
+      <Button id="btnCancel" layoutX="147.0" layoutY="149.0" mnemonicParsing="false" text="취소" />
+   </children>
+</AnchorPane>

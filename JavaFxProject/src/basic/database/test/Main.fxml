@@ -29,7 +29,7 @@
 		<Button fx:id="btnNext" layoutX="196.0" layoutY="325.0" mnemonicParsing="false" text="&gt;" />
 		<Button fx:id="btnCancel" layoutX="418.0" layoutY="649.0" mnemonicParsing="false" text="Cancel" />
 		<Button fx:id="btnAdd" layoutX="29.0" layoutY="332.0" mnemonicParsing="false" text="Add" />
-		<Button fx:id="btnDelete" layoutX="411.0" layoutY="332.0" mnemonicParsing="false" text="Delete" />
+		<Button fx:id="btnDelete" layoutX="406.0" layoutY="332.0" mnemonicParsing="false" text="Delete" />
 		<ImageView fx:id="img" fitHeight="88.0" fitWidth="216.0" layoutX="253.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true" />
 		<TableView fx:id="memView" layoutX="25.0" layoutY="409.0" prefHeight="230.0" prefWidth="451.0" />
 		<Label layoutX="25.0" layoutY="378.0" text="회원 목록">
@@ -39,6 +39,8 @@
 		</Label>
 		<Button fx:id="btnModify1" layoutX="82.0" layoutY="649.0" mnemonicParsing="false" text="Modify" />
 		<Button fx:id="btnAdd1" layoutX="27.0" layoutY="649.0" mnemonicParsing="false" text="Add" />
-		<Button fx:id="btnModify1" layoutX="154.0" layoutY="649.0" mnemonicParsing="false" text="Delete" />
+		<Button fx:id="btnDelete1" layoutX="154.0" layoutY="649.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="btnImg" layoutX="265.0" layoutY="332.0" mnemonicParsing="false" text="image" />
+      <Button fx:id="btnReserve" layoutX="223.0" layoutY="650.0" mnemonicParsing="false" text="Reservate" />
 	</children>
 </AnchorPane>

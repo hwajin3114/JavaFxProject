@@ -7,24 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="350.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
    <children>
-      <Label layoutX="191.0" layoutY="29.0" text="회원 정보 관리">
+      <Label layoutX="118.0" layoutY="14.0" text="회원 등록">
          <font>
-            <Font size="20.0" />
+            <Font size="15.0" />
          </font>
       </Label>
-      <TableView layoutX="39.0" layoutY="66.0" prefHeight="218.0" prefWidth="423.0">
-        <columns>
-          <TableColumn prefWidth="95.0" text="C1" />
-          <TableColumn prefWidth="98.0" text="C2" />
-            <TableColumn prefWidth="111.0" text="Column X" />
-            <TableColumn prefWidth="58.0" text="Column X" />
-            <TableColumn prefWidth="60.0" text="Column X" />
-        </columns>
-      </TableView>
-      <Button layoutX="399.0" layoutY="303.0" mnemonicParsing="false" text="CANCEL" />
-      <Button layoutX="39.0" layoutY="303.0" mnemonicParsing="false" text="MODIFY" />
-      <Button layoutX="120.0" layoutY="303.0" mnemonicParsing="false" text="DELETE" />
+      <Label layoutX="43.0" layoutY="76.0" text="이름" />
+      <Label layoutX="43.0" layoutY="112.0" text="전화번호" />
+      <Label layoutX="43.0" layoutY="147.0" text="생년월일" />
+      <Button id="btnReg" layoutX="77.0" layoutY="185.0" mnemonicParsing="false" text="등록" />
+      <Button id="btnCancel" layoutX="184.0" layoutY="185.0" mnemonicParsing="false" text="취소" />
+      <TextField id="tbName" layoutX="118.0" layoutY="72.0" />
+      <TextField id="tbPhone" layoutX="118.0" layoutY="108.0" />
+      <TextField id="tbBirth" layoutX="118.0" layoutY="143.0" />
    </children>
 </AnchorPane>

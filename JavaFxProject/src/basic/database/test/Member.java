@@ -13,13 +13,19 @@ public class Member {
 	private SimpleStringProperty regDate;
 
 	// 회원 등록
-	public Member(String mName, String mPhone, String mBirth, String mResYn, String regDate) {
+	public Member(String mName, String mPhone, String mBirth) {
 		super();
 		this.mName = new SimpleStringProperty(mName);
 		this.mPhone = new SimpleStringProperty(mPhone);
 		this.mBirth = new SimpleStringProperty(mBirth);
-		this.mResYn = new SimpleStringProperty(mResYn);
-		this.regDate = new SimpleStringProperty(regDate);
+	}
+
+	// 회원 수정
+	public Member(int mNum, String mPhone, String mBirth) {
+		super();
+		this.mNum = new SimpleIntegerProperty(mNum);
+		this.mPhone = new SimpleStringProperty(mPhone);
+		this.mBirth = new SimpleStringProperty(mBirth);
 	}
 
 	// 회원 상세

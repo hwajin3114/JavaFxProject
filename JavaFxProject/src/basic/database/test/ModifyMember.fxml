@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Button id="btnCancel" layoutX="205.0" layoutY="303.0" mnemonicParsing="false" prefHeight="23.0" text="CANCEL" />
+		<Button id="btnModi" layoutX="32.0" layoutY="303.0" mnemonicParsing="false" text="MODIFY" />
+		<Button id="btnDel" layoutX="121.0" layoutY="303.0" mnemonicParsing="false" text="DELETE" />
+      <Label layoutX="101.0" layoutY="26.0" text="회원 정보 수정">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="32.0" layoutY="83.0" text="이름" />
+      <Label layoutX="32.0" layoutY="116.0" text="전화번호" />
+      <Label layoutX="32.0" layoutY="150.0" text="생년월일" />
+      <Label layoutX="32.0" layoutY="189.0" text="포인트" />
+      <Label layoutX="32.0" layoutY="227.0" text="예약유무" />
+      <Label layoutX="32.0" layoutY="261.0" text="회원 가입일" />
+      <TextField id="name" layoutX="111.0" layoutY="79.0" />
+      <TextField id="phone" layoutX="111.0" layoutY="112.0" />
+      <TextField id="birth" layoutX="111.0" layoutY="146.0" />
+      <TextField id="point" layoutX="111.0" layoutY="185.0" prefHeight="23.0" prefWidth="100.0" />
+      <TextField id="resYn" layoutX="111.0" layoutY="223.0" prefHeight="23.0" prefWidth="64.0" />
+      <TextField id="regDate" layoutX="111.0" layoutY="257.0" />
+      <Label layoutX="218.0" layoutY="189.0" text="point" />
+	</children>
+</AnchorPane>
