@@ -277,7 +277,7 @@ public class BreadController implements Initializable {
 
 			Scene scene = new Scene(parent);
 			stage.setScene(scene);
-			stage.show();
+			stage.show(); 
 
 			Button btnLogin = (Button) parent.lookup("#btnLogin");
 			btnLogin.setOnAction(new EventHandler<ActionEvent>() {
