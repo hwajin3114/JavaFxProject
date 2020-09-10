@@ -10,10 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 import basic.common.CommonCode;
 import basic.common.ConnectionDB;
@@ -30,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,7 +45,7 @@ import javafx.stage.StageStyle;
 
 public class BreadController implements Initializable {
 	@FXML
-	TableView<Bread> boardView;
+	TableView<Bread> breadView;
 	@FXML
 	TableView<Member> memView;
 	@FXML // 빵
@@ -59,6 +58,8 @@ public class BreadController implements Initializable {
 	Button btnModify1, btnAdd1, btnDelete1;
 
 	ObservableList<Member> mlist; // 수정값 담기용
+	ObservableList<String> blist = FXCollections.observableArrayList();
+	ObservableList<Integer> clist = FXCollections.observableArrayList(1, 2, 3, 4, 5);
 
 	BreadDao bDao = new BreadDao();
 	MemberDao mDao = new MemberDao();
@@ -110,19 +111,22 @@ public class BreadController implements Initializable {
 		btnReserve.setOnAction(e -> reserveLogin());
 
 		// 빵 add 버튼
-		btnAdd.setOnAction(e -> selected = bDao.insertBread(btnAdd));
+		btnAdd.setOnAction(e -> {
+			selected = bDao.insertBread(btnAdd);
+			breadView.setItems(bDao.getBoardList());
+		});
 
 		// 빵 modify 버튼
 		btnModify.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (boardView.getSelectionModel().isEmpty()) {
+				if (breadView.getSelectionModel().isEmpty()) {
 					comn.showPopup(" 목록을 선택 해 주세요 ", btnModify);
 				} else {
-					selectedNum = boardView.getSelectionModel().getSelectedItem().getBnum();
+					selectedNum = breadView.getSelectionModel().getSelectedItem().getBnum();
 					clickBtnModifyAction(selectedNum);
 				}
-				boardView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList()); // refresh
 			}
 		});
 
@@ -130,17 +134,21 @@ public class BreadController implements Initializable {
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if (boardView.getSelectionModel().isEmpty()) {
+				if (breadView.getSelectionModel().isEmpty()) {
 					comn.showPopup(" 목록을 선택 해 주세요 ", btnDelete);
 				} else {
-					selectedNum = boardView.getSelectionModel().getSelectedItem().getBnum();
+					selectedNum = breadView.getSelectionModel().getSelectedItem().getBnum();
 					deleteBread(selectedNum);
 				}
 			}
 		});
 
 		// 회원 add
-		btnAdd1.setOnAction(e -> insertMember());
+		btnAdd1.setOnAction(e -> {
+			mDao.insertMember(btnAdd1);
+			memView.setItems(mDao.getMemberList());
+		});
+
 		// 회원 modify
 		btnModify1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -173,22 +181,22 @@ public class BreadController implements Initializable {
 		TableColumn<Bread, String> tcName = new TableColumn<>("빵이름");
 		tcName.setCellValueFactory(new PropertyValueFactory<>("bName"));
 		tcName.setPrefWidth(80);
-		boardView.getColumns().add(tcName);
+		breadView.getColumns().add(tcName);
 
 		TableColumn<Bread, String> tcPrice = new TableColumn<>("가격");
 		tcPrice.setCellValueFactory(new PropertyValueFactory<>("bPrice"));
 		tcPrice.setPrefWidth(80);
-		boardView.getColumns().add(tcPrice);
+		breadView.getColumns().add(tcPrice);
 
 		TableColumn<Bread, String> tcContent = new TableColumn<>("설명");
 		tcContent.setCellValueFactory(new PropertyValueFactory<>("content"));
 		tcContent.setPrefWidth(80);
-		boardView.getColumns().add(tcContent);
+		breadView.getColumns().add(tcContent);
 
-		boardView.setItems(bDao.getBoardList());
+		breadView.setItems(bDao.getBoardList());
 
 		// 값을 선택할 때마다 리스너
-		boardView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Bread>() {
+		breadView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Bread>() {
 			@Override
 			public void changed(ObservableValue<? extends Bread> observable, Bread oldValue, Bread newValue) {
 				btnImg.setVisible(true);
@@ -201,51 +209,20 @@ public class BreadController implements Initializable {
 					txtContent.setText(newValue.getContent());
 
 					// 빵 image 버튼
-					btnImg.setOnAction(new EventHandler<ActionEvent>() {
-						@Override
-						public void handle(ActionEvent arg0) {
-							FileChooser choose = new FileChooser();
-							choose.setInitialDirectory(new File("C:/"));
-
-							// 확장자 제한
-							ExtensionFilter imgType = new ExtensionFilter("image file", "*.jpg", "*.gif", "*.png");
-							choose.getExtensionFilters().add(imgType);
-
-							selected = choose.showOpenDialog(null);
-							try {
-								if (selected != null) {
-									// 2. 스트림 지정
-									FileInputStream fis = new FileInputStream(selected);
-									BufferedInputStream bis = new BufferedInputStream(fis);
-
-									// 3. 읽어오기
-									Image readimg = new Image(bis);
-									img.setImage(readimg);
-								}
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-							System.out.println("selected >> " + selected);
-						}
-					});
+					btnImg.setOnAction(e -> fileUploader());
 
 					try {
-						if (newValue.getBImg() == null) {
-							img.setImage(new Image("@../../images/apeach.png"));
-						} else {
-							// 파일 읽어오기
-							FileInputStream fis = new FileInputStream(newValue.getBImg());
-							BufferedInputStream bis = new BufferedInputStream(fis);
-							// 이미지 생성하기
-							Image image = new Image(bis);
-							img.setFitHeight(100);
-							img.setFitWidth(300);
+						// 파일 읽어오기
+						FileInputStream fis = new FileInputStream(newValue.getBImg());
+						BufferedInputStream bis = new BufferedInputStream(fis);
+						// 이미지 생성하기
+						Image image = new Image(bis);
+						img.setFitHeight(100);
+						img.setFitWidth(300);
 
-							// 이미지 띄우기
-							img.setImage(image);
-							oldImg = newValue.getBImg();
-							System.out.println("oldImg : " + oldImg);
-						}
+						// 이미지 띄우기
+						img.setImage(image);
+						oldImg = newValue.getBImg();
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -406,6 +383,59 @@ public class BreadController implements Initializable {
 						stage.setScene(scene);
 						stage.show();
 
+						TextField name = (TextField) parent.lookup("#name");
+						ComboBox<String> cBread = new ComboBox<String>();
+						sql = "select bname from bread order by 1";
+						try {
+							pstmt = conn.prepareStatement(sql);
+							ResultSet rs = pstmt.executeQuery();
+							while (rs.next()) {
+								System.out.println("blist : " + rs.getString("bname"));
+								blist.add(rs.getString("bname"));
+							}
+							cBread.setItems(blist);
+							cBread.getSelectionModel().selectFirst();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
+
+						ComboBox<Integer> cCount = new ComboBox<Integer>();
+						cCount.setItems(clist);
+						cCount.getSelectionModel().selectFirst();
+
+						TextField pickDate = (TextField) parent.lookup("#pickDate");
+
+						Button btnReserve = (Button) parent.lookup("#btnReserve");
+						btnReserve.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								System.out.println("예약 확인 버튼");
+								if (name.getText() == null || name.getText().equals("")) {
+									comn.showPopup("예약할 빵 이름을 입력하세요", btnReserve);
+									name.requestFocus();
+								} else if (pickDate.getText() == null || pickDate.getText().equals("")) {
+									comn.showPopup("픽업 날짜를 입력하세요", btnReserve);
+									pickDate.requestFocus();
+								} else {
+									Reservation reserve = new Reservation(name.getText(), cBread.getValue().toString(),
+											cCount.getValue(), pickDate.getText());
+									sql = "insert into reserve values(rnum.NEXTVAL, \'" + reserve.getMemName()
+											+ "\', \'" + reserve.getBreadName() + "\', " + reserve.getBreadCnt()
+											+ ", sysdate, \'" + reserve.getPickUpDate() + "\')";
+
+									try {
+										pstmt = conn.prepareStatement(sql);
+//										pstmt.executeUpdate();
+									} catch (SQLException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						});
+
+						Button btnCancel = (Button) parent.lookup("#btnCancel");
+						btnCancel.setOnAction(e -> stage.close());
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -461,7 +491,7 @@ public class BreadController implements Initializable {
 					e.printStackTrace();
 				}
 				stage.close();
-				boardView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList()); // refresh
 			}
 		});
 		Button btn2 = new Button("취소");
@@ -534,7 +564,7 @@ public class BreadController implements Initializable {
 					e.printStackTrace();
 				}
 				stage.close();
-				boardView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList()); // refresh
 			}
 		});
 		Button btn2 = new Button("취소");
@@ -549,67 +579,6 @@ public class BreadController implements Initializable {
 		Scene scene = new Scene(ap);
 		stage.setScene(scene);
 		stage.show();
-	}
-
-	// 추가
-	public void insertMember() {
-		Stage stage = new Stage(StageStyle.UTILITY);
-		stage.initModality(Modality.WINDOW_MODAL);
-		stage.initOwner(btnAdd.getScene().getWindow());
-
-		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("AddMember.fxml"));
-
-			Scene scene = new Scene(parent);
-			stage.setScene(scene);
-			stage.show();
-
-			Button btnReg = (Button) parent.lookup("#btnReg");
-			btnReg.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					TextField tbName = (TextField) parent.lookup("#tbName");
-					TextField tbPhone = (TextField) parent.lookup("#tbPhone");
-					TextField tbBirth = (TextField) parent.lookup("#tbBirth");
-
-					tbPhone.setPromptText("010-xxxx-xxxx");
-					tbBirth.setPromptText("19xx-xx-xx");
-
-					if (tbName.getText() == null || tbName.getText().equals("")) {
-						comn.showPopup("이름을 입력하세요", btnReg);
-						tbName.requestFocus();
-					} else if (tbPhone.getText() == null || tbPhone.getText().equals("")) {
-						comn.showPopup("전화번호를 입력하세요", btnReg);
-						tbPhone.requestFocus();
-					} else if (tbBirth.getText() == null || tbBirth.getText().equals("")) {
-						comn.showPopup("생년월일을 입력하세요", btnReg);
-						tbBirth.requestFocus();
-					} else {
-						Member member = new Member(tbName.getText(), tbPhone.getText(), tbBirth.getText());
-//
-						sql = "insert into member(mnum, mname, mphone, mbirth) values(mnum.NEXTVAL, \'"
-								+ member.getMName() + "\', " + member.getMPhone() + ", \'" + member.getMBirth() + "\')";
-
-						try {
-							pstmt = conn.prepareStatement(sql);
-							pstmt.executeUpdate();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-
-						memView.setItems(mDao.getMemberList()); // refresh
-						stage.close();
-					}
-				}
-			});
-
-			Button btnCancel = (Button) parent.lookup("#btnCancel");
-			btnCancel.setOnAction(e -> stage.close());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	// 수정
@@ -632,21 +601,20 @@ public class BreadController implements Initializable {
 			TextField resYn = (TextField) parent.lookup("#resYn");
 			TextField regDate = (TextField) parent.lookup("#regDate");
 
-			mlist = mDao.getMemberList();
+			List<Member> mlist = mDao.getMList(mnum);
 
-			name.setText(mlist.get(mnum - 1).getMName().toString());
-			phone.setText(mlist.get(mnum - 1).getMPhone().toString());
-			birth.setText(mlist.get(mnum - 1).getMBirth().toString());
-			point.setText(String.valueOf(mlist.get(mnum - 1).getMPoint()));
-			resYn.setText(mlist.get(mnum - 1).getMResYn().toString());
-			regDate.setText(mlist.get(mnum - 1).getRegDate().toString());
+			name.setText(mlist.get(0).getMName().toString());
+			phone.setText(mlist.get(0).getMPhone().toString());
+			birth.setText(mlist.get(0).getMBirth().toString());
+			point.setText(String.valueOf(mlist.get(0).getMPoint()));
+			resYn.setText(mlist.get(0).getMResYn().toString());
+			regDate.setText(mlist.get(0).getRegDate().toString());
 
 			name.setEditable(false);
 			point.setEditable(false);
 			resYn.setEditable(false);
 			regDate.setEditable(false); // 수정 불가
 
-			System.out.println(mlist.get(1).getMBirth().toString());
 			Button btnModi = (Button) parent.lookup("#btnModi");
 			btnModi.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -659,7 +627,7 @@ public class BreadController implements Initializable {
 						birth.requestFocus();
 					} else {
 						Member member = new Member(mnum, phone.getText(), birth.getText());
-//
+
 						sql = "update member set mphone = ?, mbirth = ?	where mnum = ?";
 
 						try {
@@ -737,14 +705,15 @@ public class BreadController implements Initializable {
 	}
 
 	private void clickBtnNextAction() {
-		boardView.getSelectionModel().selectNext();
-		count = boardView.getSelectionModel().getFocusedIndex();
+		breadView.getSelectionModel().selectNext();
+		count = breadView.getSelectionModel().getFocusedIndex();
 		sql = "select * from bread";
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 			if (nextCount == count) {
-				boardView.getSelectionModel().selectFirst();
+				breadView.getSelectionModel().selectFirst();
 			}
 			nextCount = count;
 		} catch (SQLException e) {
@@ -753,13 +722,38 @@ public class BreadController implements Initializable {
 	}
 
 	private void clickBtnPrevAction() {
-		boardView.getSelectionModel().selectPrevious();
-		num = boardView.getSelectionModel().getFocusedIndex();
+		breadView.getSelectionModel().selectPrevious();
+		num = breadView.getSelectionModel().getFocusedIndex();
 		System.out.println("num> " + num);
 		System.out.println("prevCount> " + prevCount);
 		if (prevCount == num) {
-			boardView.getSelectionModel().selectLast();
+			breadView.getSelectionModel().selectLast();
 		}
 		prevCount = num;
+	}
+
+	public void fileUploader() {
+		FileChooser choose = new FileChooser();
+		choose.setInitialDirectory(new File("C:/"));
+
+		// 확장자 제한
+		ExtensionFilter imgType = new ExtensionFilter("image file", "*.jpg", "*.gif", "*.png");
+		choose.getExtensionFilters().add(imgType);
+
+		selected = choose.showOpenDialog(null);
+		try {
+			if (selected != null) {
+				// 2. 스트림 지정
+				FileInputStream fis = new FileInputStream(selected);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+
+				// 3. 읽어오기
+				Image readimg = new Image(bis);
+				img.setImage(readimg);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println("selected >> " + selected);
 	}
 }

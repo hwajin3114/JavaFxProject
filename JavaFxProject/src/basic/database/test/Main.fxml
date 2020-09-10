@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="500.0" stylesheets="@myStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="basic.database.test.BreadController">
 	<children>
-		<TableView fx:id="boardView" layoutX="25.0" layoutY="68.0" prefHeight="245.0" prefWidth="200.0">
+		<TableView fx:id="breadView" layoutX="25.0" layoutY="68.0" prefHeight="245.0" prefWidth="200.0">
 		</TableView>
 		<Label layoutX="25.0" layoutY="36.0" text="빵 목록">
 			<font>

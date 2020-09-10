@@ -133,7 +133,7 @@ public class BreadDao {
 						comn.showPopup("이미지를 선택하세요", breadAdd);
 					} else {
 						if (!Pattern.matches(checkInt, txtPrice.getText())) {
-							System.out.println("test > "+txtPrice.getText());
+							System.out.println("test > " + txtPrice.getText());
 							comn.showPopup("숫자만 입력하세요", breadAdd);
 							txtPrice.clear();
 							txtPrice.requestFocus();
@@ -151,11 +151,12 @@ public class BreadDao {
 							} catch (SQLException e) {
 								e.printStackTrace();
 							}
+
 							Parent parent;
 							try {
 								parent = FXMLLoader.load(getClass().getResource("Main.fxml"));
-								TableView<Bread> boardView = (TableView<Bread>) parent.lookup("#reserveView");
-								boardView.setItems(getBoardList()); // refresh
+								TableView<Bread> breadView = (TableView<Bread>) parent.lookup("#breadView");
+								breadView.setItems(getBoardList()); // refresh
 								stage.close();
 							} catch (IOException e) {
 								e.printStackTrace();
