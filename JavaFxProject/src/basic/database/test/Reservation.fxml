@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane stylesheets="@myStyle.css" prefHeight="250.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView id="reserveView" layoutX="15.0" layoutY="55.0" prefHeight="141.0" prefWidth="472.0">
+      </TableView>
+      <Label layoutX="218.0" layoutY="20.0" text="예약 목록">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button id="rRegBtn" layoutX="15.0" layoutY="213.0" mnemonicParsing="false" text="등록" />
+      <Button id="rDelBtn" layoutX="68.0" layoutY="213.0" mnemonicParsing="false" text="삭제" />
+      <Button id="rCancelBtn" layoutX="446.0" layoutY="213.0" mnemonicParsing="false" text="취소" />
+   </children>
 </AnchorPane>
-

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane stylesheets="@myStyle.css" prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Button id="btnCancel" layoutX="205.0" layoutY="303.0" mnemonicParsing="false" prefHeight="23.0" text="CANCEL" />
 		<Button id="btnModi" layoutX="32.0" layoutY="303.0" mnemonicParsing="false" text="MODIFY" />
@@ -23,8 +23,8 @@
       <Label layoutX="32.0" layoutY="227.0" text="예약유무" />
       <Label layoutX="32.0" layoutY="261.0" text="회원 가입일" />
       <TextField id="name" layoutX="111.0" layoutY="79.0" />
-      <TextField id="phone" layoutX="111.0" layoutY="112.0" />
-      <TextField id="birth" layoutX="111.0" layoutY="146.0" />
+      <TextField id="phone" layoutX="111.0" layoutY="112.0" promptText="010-xxxx-xxxx" />
+      <TextField id="birth" layoutX="111.0" layoutY="146.0"  promptText="19xx-xx-xx"/>
       <TextField id="point" layoutX="111.0" layoutY="185.0" prefHeight="23.0" prefWidth="100.0" />
       <TextField id="resYn" layoutX="111.0" layoutY="223.0" prefHeight="23.0" prefWidth="64.0" />
       <TextField id="regDate" layoutX="111.0" layoutY="257.0" />

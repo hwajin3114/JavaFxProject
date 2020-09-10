@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="250.0" stylesheets="@myStyle.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Label layoutX="100.0" layoutY="25.0" text="빵 예약">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="66.0" text="예약자명" />
+      <Label layoutX="23.0" layoutY="106.0" text="예약할 빵" />
+      <Label layoutX="23.0" layoutY="143.0" text="빵 수량" />
+      <Label layoutX="23.0" layoutY="181.0" text="픽업일" />
+      <TextField id="name" layoutX="94.0" layoutY="62.0" prefHeight="23.0" prefWidth="128.0" />
+      <ComboBox id="cBread" layoutX="94.0" layoutY="102.0" prefHeight="23.0" prefWidth="128.0" />
+      <ComboBox id="cCount" layoutX="94.0" layoutY="139.0" prefHeight="23.0" prefWidth="128.0" />
+      <TextField id="pickDate" layoutX="94.0" layoutY="177.0" prefHeight="23.0" prefWidth="128.0" promptText="2020-xx-xx" />
+      <Button layoutX="61.0" layoutY="241.0" mnemonicParsing="false" text="예약" />
+      <Button layoutX="148.0" layoutY="241.0" mnemonicParsing="false" text="취소" />
+   </children>
+</AnchorPane>

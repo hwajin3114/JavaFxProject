@@ -4,10 +4,21 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Reservation {
+	private SimpleIntegerProperty rnum;
 	private SimpleStringProperty memName;
 	private SimpleStringProperty breadName;
 	private SimpleIntegerProperty breadCnt;
 	private SimpleStringProperty pickUpDate;
+
+	public Reservation(int rnum, String memName, String breadName, int breadCnt,
+			String pickUpDate) {
+		super();
+		this.rnum = new SimpleIntegerProperty(rnum);
+		this.memName = new SimpleStringProperty(memName);
+		this.breadName = new SimpleStringProperty(breadName);
+		this.breadCnt = new SimpleIntegerProperty(breadCnt);
+		this.pickUpDate = new SimpleStringProperty(pickUpDate);
+	}
 
 	public Reservation(String memName, String breadName, int breadCnt,
 			String pickUpDate) {
@@ -16,6 +27,14 @@ public class Reservation {
 		this.breadName = new SimpleStringProperty(breadName);
 		this.breadCnt = new SimpleIntegerProperty(breadCnt);
 		this.pickUpDate = new SimpleStringProperty(pickUpDate);
+	}
+
+	public int getRnum() {
+		return this.rnum.get();
+	}
+	
+	public void setRnum(int rnum) {
+		this.rnum.set(rnum);
 	}
 
 	public String getMemName() {

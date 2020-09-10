@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane stylesheets="@myStyle.css" prefHeight="250.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
    <children>
       <Label layoutX="118.0" layoutY="14.0" text="회원 등록">
          <font>
@@ -20,7 +20,7 @@
       <Button id="btnReg" layoutX="77.0" layoutY="185.0" mnemonicParsing="false" text="등록" />
       <Button id="btnCancel" layoutX="184.0" layoutY="185.0" mnemonicParsing="false" text="취소" />
       <TextField id="tbName" layoutX="118.0" layoutY="72.0" />
-      <TextField id="tbPhone" layoutX="118.0" layoutY="108.0" />
-      <TextField id="tbBirth" layoutX="118.0" layoutY="143.0" />
+      <TextField id="tbPhone" layoutX="118.0" layoutY="108.0" promptText="010-xxxx-xxxx"/>
+      <TextField id="tbBirth" layoutX="118.0" layoutY="143.0" promptText="19xx-xx-xx" />
    </children>
 </AnchorPane>
