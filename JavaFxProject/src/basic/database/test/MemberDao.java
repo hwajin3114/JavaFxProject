@@ -1,6 +1,5 @@
 package basic.database.test;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,17 +9,6 @@ import basic.common.CommonCode;
 import basic.common.ConnectionDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MemberDao {
 	CommonCode comn = new CommonCode();
@@ -51,6 +39,19 @@ public class MemberDao {
 		return mlist;
 	}
 
+	// 추가
+	public void insertMember(Member member) {
+		sql = "insert into member(mnum, mname, mphone, mbirth) values(mnum.NEXTVAL, \'" + member.getMName() + "\', "
+				+ member.getMPhone() + ", \'" + member.getMBirth() + "\')";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 수정시 값 출력
 	public ObservableList<Member> getMList(int mnum) {
 		sql = "select * from member where mnum = " + mnum;
@@ -70,70 +71,17 @@ public class MemberDao {
 		return mlist;
 	}
 
-	// 추가
-	public void insertMember(Button btn) {
-		Stage stage = new Stage(StageStyle.UTILITY);
-		stage.initModality(Modality.WINDOW_MODAL);
-		stage.initOwner(btn.getScene().getWindow());
+	public void updateMember(Member member) {
+		sql = "update member set mphone = ?, mbirth = ?	where mnum = ?";
 
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource("AddMember.fxml"));
-
-			Scene scene = new Scene(parent);
-			stage.setScene(scene);
-			stage.show();
-
-			Button btnReg = (Button) parent.lookup("#btnReg");
-			btnReg.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent event) {
-					TextField tbName = (TextField) parent.lookup("#tbName");
-					TextField tbPhone = (TextField) parent.lookup("#tbPhone");
-					TextField tbBirth = (TextField) parent.lookup("#tbBirth");
-
-					tbPhone.setPromptText("010-xxxx-xxxx");
-					tbBirth.setPromptText("19xx-xx-xx");
-
-					if (tbName.getText() == null || tbName.getText().equals("")) {
-						comn.showPopup("이름을 입력하세요", btnReg);
-						tbName.requestFocus();
-					} else if (tbPhone.getText() == null || tbPhone.getText().equals("")) {
-						comn.showPopup("전화번호를 입력하세요", btnReg);
-						tbPhone.requestFocus();
-					} else if (tbBirth.getText() == null || tbBirth.getText().equals("")) {
-						comn.showPopup("생년월일을 입력하세요", btnReg);
-						tbBirth.requestFocus();
-					} else {
-						Member member = new Member(tbName.getText(), tbPhone.getText(), tbBirth.getText());
-						sql = "insert into member(mnum, mname, mphone, mbirth) values(mnum.NEXTVAL, \'"
-								+ member.getMName() + "\', \'" + member.getMPhone() + "\', \'" + member.getMBirth()
-								+ "\')";
-
-						try {
-							pstmt = conn.prepareStatement(sql);
-							pstmt.executeUpdate();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-
-						Parent parent;
-						try {
-							parent = FXMLLoader.load(getClass().getResource("Main.fxml"));
-							TableView<Member> memView = (TableView<Member>) parent.lookup("#memView");
-							stage.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			});
-
-			Button btnCancel = (Button) parent.lookup("#btnCancel");
-			btnCancel.setOnAction(e -> stage.close());
-		} catch (IOException e) {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMPhone());
+			pstmt.setString(2, member.getMBirth());
+			pstmt.setInt(3, member.getMnum());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 }

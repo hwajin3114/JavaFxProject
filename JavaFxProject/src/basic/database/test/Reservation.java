@@ -9,15 +9,17 @@ public class Reservation {
 	private SimpleStringProperty breadName;
 	private SimpleIntegerProperty breadCnt;
 	private SimpleStringProperty pickUpDate;
+	private SimpleStringProperty regDate;
 
 	public Reservation(int rnum, String memName, String breadName, int breadCnt,
-			String pickUpDate) {
+			String pickUpDate, String regDate) {
 		super();
 		this.rnum = new SimpleIntegerProperty(rnum);
 		this.memName = new SimpleStringProperty(memName);
 		this.breadName = new SimpleStringProperty(breadName);
 		this.breadCnt = new SimpleIntegerProperty(breadCnt);
 		this.pickUpDate = new SimpleStringProperty(pickUpDate);
+		this.regDate = new SimpleStringProperty(regDate);
 	}
 
 	public Reservation(String memName, String breadName, int breadCnt,
@@ -67,5 +69,13 @@ public class Reservation {
 	
 	public void setPickUpDate(String pickUpDate) {
 		this.pickUpDate.set(pickUpDate);
+	}
+
+	public String getRegDate() {
+		return this.regDate.get();
+	}
+	
+	public void setRegDate(String regDate) {
+		this.regDate.set(regDate);
 	}
 }
