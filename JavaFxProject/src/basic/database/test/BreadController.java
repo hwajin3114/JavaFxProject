@@ -245,7 +245,7 @@ public class BreadController implements Initializable {
 	}
 
 	// 예약 테이블
-	public void ReserveTable(String name) {
+	public void ReserveTable(String name, String phone) {
 		TableColumn<Reservation, String> tcMName = new TableColumn<>("예약자명");
 		tcMName.setCellValueFactory(new PropertyValueFactory<>("memName"));
 		tcMName.setPrefWidth(80);
@@ -267,7 +267,7 @@ public class BreadController implements Initializable {
 		tcReg.setPrefWidth(100);
 		reserveView.getColumns().add(tcReg);
 
-		reserveView.setItems(rDao.getReserveList(name));
+		reserveView.setItems(rDao.getReserveList(name, phone));
 	}
 
 	// 예약
@@ -327,6 +327,9 @@ public class BreadController implements Initializable {
 					}
 				}
 			});
+
+			Button btnCancel = (Button) parent.lookup("#btnCancel");
+			btnCancel.setOnAction(e -> stage.close());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -347,7 +350,7 @@ public class BreadController implements Initializable {
 			Scene scene = new Scene(parent);
 			stage.setScene(scene);
 			stage.show();
-			ReserveTable(name);
+			ReserveTable(name, phone);
 
 			Button rRegBtn = (Button) parent.lookup("#rRegBtn");
 			if (name.equals("master")) {
@@ -357,7 +360,7 @@ public class BreadController implements Initializable {
 			} else {
 				comn.showPopup(name + "님 예약창입니다.", rRegBtn);
 			}
-			
+
 			rRegBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
@@ -403,7 +406,7 @@ public class BreadController implements Initializable {
 											cBread.getValue().toString(), cCount.getValue(), pickDate.getText());
 									rDao.insertReserve(reserve);
 									rDao.updateMReserve(name);
-									reserveView.setItems(rDao.getReserveList(name)); // refresh
+									reserveView.setItems(rDao.getReserveList(name, phone)); // refresh
 									stage.close();
 								}
 							}
@@ -427,7 +430,7 @@ public class BreadController implements Initializable {
 						comn.showPopup(" 목록을 선택 해 주세요 ", rDelBtn);
 					} else {
 						selectedNum = reserveView.getSelectionModel().getSelectedItem().getRnum();
-						clickBtnDelReserve(selectedNum, name);
+						clickBtnDelReserve(selectedNum, name, phone);
 					}
 				}
 			});
@@ -442,7 +445,7 @@ public class BreadController implements Initializable {
 	}
 
 	// 삭제
-	public void clickBtnDelReserve(int rnum, String name) {
+	public void clickBtnDelReserve(int rnum, String name, String phone) {
 		Stage stage = new Stage(StageStyle.UTILITY);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(primaryStage);
@@ -462,11 +465,12 @@ public class BreadController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				rDao.deleteReserve(rnum);
+				rDao.updatePoint(name);
 				int checkNum = rDao.checkReserve(name);
 				if (checkNum == 0) {
 					rDao.delUpdateMReserve(name);
 				}
-				reserveView.setItems(rDao.getReserveList(name)); // refresh
+				reserveView.setItems(rDao.getReserveList(name, phone)); // refresh
 				stage.close();
 				breadView.setItems(bDao.getBoardList()); // refresh
 			}
@@ -506,7 +510,7 @@ public class BreadController implements Initializable {
 				public void handle(ActionEvent event) {
 					FileChooser choose = new FileChooser();
 					choose.setTitle("이미지 선택");
-					choose.setInitialDirectory(new File("C:/"));
+					choose.setInitialDirectory(new File("C:\\Users\\admin\\Pictures"));
 
 					// 확장자 제한
 					ExtensionFilter imgType = new ExtensionFilter("image file", "*.jpg", "*.gif", "*.png");
@@ -685,11 +689,16 @@ public class BreadController implements Initializable {
 						comn.showPopup("생년월일을 입력하세요", btnReg);
 						tbBirth.requestFocus();
 					} else {
-						Member member = new Member(tbName.getText(), tbPhone.getText(), tbBirth.getText());
-						mDao.insertMember(member);
+						int checkNum = mDao.checkInsertM(tbName.getText(), tbPhone.getText());
+						if (checkNum == 0) {
+							Member member = new Member(tbName.getText(), tbPhone.getText(), tbBirth.getText());
+							mDao.insertMember(member);
 
-						memView.setItems(mDao.getMemberList()); // refresh
-						stage.close();
+							memView.setItems(mDao.getMemberList()); // refresh
+							stage.close();
+						} else {
+							comn.showPopup("중복된 회원이 있습니다.", btnReg);
+						}
 					}
 				}
 			});
@@ -834,7 +843,7 @@ public class BreadController implements Initializable {
 	private void clickBtnPrevAction() {
 		breadView.getSelectionModel().selectPrevious();
 		num = breadView.getSelectionModel().getFocusedIndex();
-		
+
 		if (prevCount == num) {
 			breadView.getSelectionModel().selectLast();
 		}
@@ -843,7 +852,7 @@ public class BreadController implements Initializable {
 
 	public void fileUploader() {
 		FileChooser choose = new FileChooser();
-		choose.setInitialDirectory(new File("C:/"));
+		choose.setInitialDirectory(new File("C:\\Users\\admin\\Pictures"));
 
 		// 확장자 제한
 		ExtensionFilter imgType = new ExtensionFilter("image file", "*.jpg", "*.gif", "*.png");

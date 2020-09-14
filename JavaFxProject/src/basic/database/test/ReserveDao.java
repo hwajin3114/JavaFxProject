@@ -18,11 +18,11 @@ public class ReserveDao {
 	ObservableList<Reservation> rlist;
 
 	// 예약 조회
-	public ObservableList<Reservation> getReserveList(String name) {
+	public ObservableList<Reservation> getReserveList(String name, String phone) {
 		if (name.equals("master")) {
 			sql = "select * from reserve order by 1";
 		} else {
-			sql = "select * from reserve where mname = ? order by 1";
+			sql = "select * from reserve where mname = ? and mphone = ? order by 1";
 		}
 		rlist = FXCollections.observableArrayList();
 
@@ -30,6 +30,7 @@ public class ReserveDao {
 			pstmt = conn.prepareStatement(sql);
 			if (!name.equals("master")) {
 				pstmt.setString(1, name);
+				pstmt.setString(2, phone);
 			}
 			ResultSet rs = pstmt.executeQuery();
 
@@ -59,7 +60,7 @@ public class ReserveDao {
 	}
 
 	public void updateMReserve(String name) {
-		sql = "update member set mresyn = 'Y' where mname = \'" + name + "\'";
+		sql = "update member set mresyn = 'Y', mpoint = mpoint+10 where mname = \'" + name + "\'";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
@@ -75,6 +76,17 @@ public class ReserveDao {
 			pstmt = conn.prepareStatement(sql);
 			int i = pstmt.executeUpdate();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 예약 삭제 시 포인트 삭감
+	public void updatePoint(String name) {
+		sql = "update member set mpoint = mpoint-10 where mname = \'" + name + "\'";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

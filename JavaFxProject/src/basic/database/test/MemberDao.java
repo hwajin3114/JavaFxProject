@@ -52,6 +52,20 @@ public class MemberDao {
 		}
 	}
 
+	// 회원 추가 시 중복 체크
+	public int checkInsertM(String name, String phone) {
+		int result = 0;
+		sql = "select * from member where mname = \'" + name + "\' and mphone = \'" + phone + "\'";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	// 수정시 값 출력
 	public ObservableList<Member> getMList(int mnum) {
 		sql = "select * from member where mnum = " + mnum;
