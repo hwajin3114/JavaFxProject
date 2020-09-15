@@ -350,6 +350,7 @@ public class BreadController implements Initializable {
 			Scene scene = new Scene(parent);
 			stage.setScene(scene);
 			stage.show();
+			System.out.println("phone 1 :" + phone);
 			ReserveTable(name, phone);
 
 			Button rRegBtn = (Button) parent.lookup("#rRegBtn");

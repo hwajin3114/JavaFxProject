@@ -22,7 +22,10 @@ public class ReserveDao {
 		if (name.equals("master")) {
 			sql = "select * from reserve order by 1";
 		} else {
-			sql = "select * from reserve where mname = ? and mphone = ? order by 1";
+			sql = "select * from reserve r\r\n" + 
+					"join member m on r.mname = m.mname\r\n" + 
+					"where m.mphone = ? and m.mname = ?\r\n" + 
+					"order by 1";
 		}
 		rlist = FXCollections.observableArrayList();
 
