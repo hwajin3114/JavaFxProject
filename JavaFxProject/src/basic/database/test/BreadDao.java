@@ -25,19 +25,35 @@ public class BreadDao {
 	ObservableList<Bread> list;
 
 	// 조회
-	public ObservableList<Bread> getBoardList() {
+	public ObservableList<Bread> getBoardList(String key) {
 		sql = "select * from bread order by 1";
 		list = FXCollections.observableArrayList();
-		try {
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Bread bread = new Bread(rs.getInt("bnum"), rs.getString("bname"), rs.getInt("bprice"),
-						rs.getString("bimg"), rs.getString("content"), rs.getString("regdate"));
-				list.add(bread);
+		if (key != null) {
+			sql = "select * from bread where bname like \'%" + key + "%\' order by 1";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Bread bread = new Bread(rs.getInt("bnum"), rs.getString("bname"), rs.getInt("bprice"),
+							rs.getString("bimg"), rs.getString("content"), rs.getString("regdate"));
+					list.add(bread);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} else {
+			sql = "select * from bread order by 1";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery();
+				while (rs.next()) {
+					Bread bread = new Bread(rs.getInt("bnum"), rs.getString("bname"), rs.getInt("bprice"),
+							rs.getString("bimg"), rs.getString("content"), rs.getString("regdate"));
+					list.add(bread);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return list;
@@ -46,9 +62,8 @@ public class BreadDao {
 	// 추가
 	public void insertBread(Bread bread) {
 
-		sql = "insert into bread values(bnum.NEXTVAL, \'" + bread.getBName() + "\', "
-				+ bread.getBPrice() + ", \'" + bread.getBImg() + "\', \'" + bread.getContent()
-				+ "\', sysdate)";
+		sql = "insert into bread values(bnum.NEXTVAL, \'" + bread.getBName() + "\', " + bread.getBPrice() + ", \'"
+				+ bread.getBImg() + "\', \'" + bread.getContent() + "\', sysdate)";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -56,6 +71,5 @@ public class BreadDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

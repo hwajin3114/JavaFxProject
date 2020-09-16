@@ -31,11 +31,11 @@ public class BreadController implements Initializable {
 	@FXML
 	TableView<Member> memView;
 	@FXML // 빵
-	TextField txtName, txtPrice, txtRegDate, txtContent;
+	TextField txtName, txtPrice, txtRegDate, txtContent, keyword;
 	@FXML
 	ImageView img;
 	@FXML // 빵
-	Button btnNext, btnPrev, btnModify, btnCancel, btnAdd, btnDelete, btnImg, btnReser;
+	Button btnNext, btnPrev, btnModify, btnCancel, btnAdd, btnDelete, btnImg, btnReser, btnSearch;
 	@FXML // 회원
 	Button btnModify1, btnAdd1, btnDelete1, btnRefresh;
 
@@ -99,6 +99,9 @@ public class BreadController implements Initializable {
 		// 예약 버튼
 		btnReser.setOnAction(e -> reserveLogin());
 
+		// 빵 search 버튼
+		btnSearch.setOnAction(e -> clickBtnSearchBread());
+
 		// 빵 add 버튼
 		btnAdd.setOnAction(e -> clickBtnAddBread());
 
@@ -112,7 +115,7 @@ public class BreadController implements Initializable {
 					selectedNum = breadView.getSelectionModel().getSelectedItem().getBnum();
 					clickBtnModifyAction(selectedNum);
 				}
-				breadView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList(null)); // refresh
 			}
 		});
 
@@ -177,7 +180,7 @@ public class BreadController implements Initializable {
 		tcContent.setPrefWidth(80);
 		breadView.getColumns().add(tcContent);
 
-		breadView.setItems(bDao.getBoardList());
+		breadView.setItems(bDao.getBoardList(null));
 
 		// 값을 선택할 때마다 리스너
 		breadView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Bread>() {
@@ -350,7 +353,6 @@ public class BreadController implements Initializable {
 			Scene scene = new Scene(parent);
 			stage.setScene(scene);
 			stage.show();
-			System.out.println("phone 1 :" + phone);
 			ReserveTable(name, phone);
 
 			Button rRegBtn = (Button) parent.lookup("#rRegBtn");
@@ -473,7 +475,7 @@ public class BreadController implements Initializable {
 				}
 				reserveView.setItems(rDao.getReserveList(name, phone)); // refresh
 				stage.close();
-				breadView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList(null)); // refresh
 			}
 		});
 
@@ -489,6 +491,16 @@ public class BreadController implements Initializable {
 		Scene scene = new Scene(ap);
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	// 검색
+	private void clickBtnSearchBread() {
+		String search = null;
+		if (!keyword.getText().isEmpty()) {
+			search = keyword.getText().toString();
+		} 
+
+		breadView.setItems(bDao.getBoardList(search)); // refresh
 	}
 
 	// 추가
@@ -568,7 +580,7 @@ public class BreadController implements Initializable {
 							Bread bread = new Bread(txtName.getText(), Integer.parseInt(txtPrice.getText()),
 									selected.toString(), txtContent.getText());
 							bDao.insertBread(bread);
-							breadView.setItems(bDao.getBoardList()); // refresh
+							breadView.setItems(bDao.getBoardList(null)); // refresh
 							stage.close();
 						}
 					}
@@ -638,7 +650,7 @@ public class BreadController implements Initializable {
 				txtRegDate.clear();
 				txtContent.clear();
 				img.setVisible(false);
-				breadView.setItems(bDao.getBoardList()); // refresh
+				breadView.setItems(bDao.getBoardList(null)); // refresh
 			}
 		});
 		Button btn2 = new Button("취소");

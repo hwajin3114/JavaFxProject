@@ -11,11 +11,6 @@
 	<children>
 		<TableView fx:id="breadView" layoutX="25.0" layoutY="68.0" prefHeight="245.0" prefWidth="200.0">
 		</TableView>
-		<Label layoutX="25.0" layoutY="36.0" text="빵 목록">
-			<font>
-				<Font size="15.0" />
-			</font>
-		</Label>
 		<Label layoutX="251.0" layoutY="74.0" styleClass="lblClass" text="빵이름" />
 		<Label layoutX="251.0" layoutY="107.0" styleClass="lblClass" text="가격" />
 		<Label layoutX="333.0" layoutY="107.0" styleClass="lblClass" text="등록 일자" />
@@ -32,16 +27,13 @@
 		<Button fx:id="btnDelete" layoutX="406.0" layoutY="332.0" mnemonicParsing="false" text="Delete" />
 		<ImageView fx:id="img" fitHeight="88.0" fitWidth="216.0" layoutX="253.0" layoutY="225.0" pickOnBounds="true" preserveRatio="false" />
 		<TableView fx:id="memView" layoutX="25.0" layoutY="409.0" prefHeight="230.0" prefWidth="451.0" />
-		<Label layoutX="25.0" layoutY="378.0" text="회원 목록">
-			<font>
-				<Font size="15.0" />
-			</font>
-		</Label>
 		<Button fx:id="btnModify1" layoutX="82.0" layoutY="649.0" mnemonicParsing="false" text="Modify" />
 		<Button fx:id="btnAdd1" layoutX="27.0" layoutY="649.0" mnemonicParsing="false" text="Add" />
 		<Button fx:id="btnDelete1" layoutX="154.0" layoutY="649.0" mnemonicParsing="false" text="Delete" />
       <Button fx:id="btnImg" layoutX="265.0" layoutY="332.0" mnemonicParsing="false" text="image" />
       <Button fx:id="btnReser" layoutX="223.0" layoutY="650.0" mnemonicParsing="false" text="Reservate" />
-      <Button fx:id="btnRefresh" layoutX="98.0" layoutY="376.0" mnemonicParsing="false" text="Refresh" />
+      <Button fx:id="btnRefresh" layoutX="416.0" layoutY="375.0" mnemonicParsing="false" text="Refresh" />
+      <TextField fx:id="keyword" layoutX="26.0" layoutY="34.0" prefHeight="23.0" prefWidth="130.0" promptText="검색어를 입력하세요" />
+      <Button fx:id="btnSearch" layoutX="168.0" layoutY="33.0" mnemonicParsing="false" text="Search" />
 	</children>
 </AnchorPane>
